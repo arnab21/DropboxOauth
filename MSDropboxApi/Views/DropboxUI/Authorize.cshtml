@@ -1,0 +1,45 @@
+﻿<div class="jumbotron">
+    <h1>Dropbox Auth Direct</h1>
+    <p class="lead">Dropbox Auth landing page.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+@{
+    string dropboxAuthEndpoint = "https://www.dropbox.com/oauth2/authorize?response_type=code&client_id=vj36hmzj1c0ggsm&state=" + ViewBag.MsUserId + "%26" + ViewBag.Nonce + "&redirect_uri=";
+    string redirectUri = Request.IsLocal ? "http%3A%2F%2Flocalhost%3A53565%2Fdropboxapi%2FacceptToken" : "https%3A%2F%2Fmsdropboxapi.azurewebsites.net%2Fdropboxapi%2FacceptToken";
+}
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>Authorize with User Dropbox</p>
+        <p><b>UserId: </b>@ViewBag.MsUserId</p>
+        <p><b>Nonce: </b>@ViewBag.Nonce</p>
+        @*<p><a class="btn btn-default" href="https://www.dropbox.com/oauth2/authorize?response_type=code&client_id=vj36hmzj1c0ggsm&state=123456&redirect_uri=http%3A%2F%2Flocalhost%3A53565%2Fdropboxapi%2FacceptToken">Initiate &raquo;</a></p>*@
+        <p><a class="btn btn-default" href=@dropboxAuthEndpoint@redirectUri>Initiate &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>User API calls</h2>
+        <p>Search folders</p>
+        @*<p><a id="UserApiCall" class="btn btn-default" href="../dropboxapi/search/MSPlan?searchFileName=ssm">Search MsPlan/ssm&raquo;</a></p>*@
+        <p><button id="UserApiCall" class="btn btn-default">Search file MsPlan/ssm&raquo;</button></p>
+        <textarea id="UserApiResponse" style="width: 300px; height: 150px;">
+        </textarea>
+    </div>
+    <div class="col-md-4">
+        <h2>Business API calls</h2>
+        <p>Search Team</p>
+        <p><button id="BusinessApiCall" class="btn btn-default">Search Team Members&raquo;</button></p>
+        <textarea id="BusinessApiResponse" style="width: 300px; height: 150px;"></textarea>
+</div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $('#UserApiCall').click(function () {
+            $.getJSON('../dropboxapi/search/MSPlan?searchFileName=ssm', function (jsonPayload) {
+                $('#UserApiResponse').val(jsonPayload);
+            });
+        });
+
+    </script>
+}
